@@ -22,7 +22,7 @@ from . import view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hola/', view.index),
     path('probarconexion/', view.index),
+    path('load_file/', main.load_file, name='load_file'),
     path('delete_duplicate/', main.delete_duplicates, name='delete_duplicate'),
 ]
