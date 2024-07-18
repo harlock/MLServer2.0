@@ -6,7 +6,7 @@ import os.path
 import pandas as pd
 from pathlib import Path
 
-from functions import loadfile
+from functions import loadfile, deleteduplicates, changeValue
 
 from django.views.decorators.http import require_http_methods
 
@@ -21,25 +21,19 @@ if __name__ == '__main__':
 
 @require_http_methods(["GET"])
 def load_file(request):
-    print("llego a loadfile")
+    print("Funcion de loadFile llamada")
     pathfile = request.GET["path_file"]
     namefile = request.GET["name_file"]
     check_file = os.path.isfile(namefile)
     pathfile = pathfile if not check_file else namefile
 
     if not check_file:
-        print("El archivo no existe aun")
         df = pd.read_csv(pathfile)
-        print("Lee el archivo con el path")
         filepath = Path(namefile)
-        print("asigna al filepath el path del nombre del archivo creo")
         filepath.parent.mkdir(parents=True, exist_ok=True)
-        print("crea el directorio si es que no existe")
         df.to_csv(filepath, index=False)
-        print("Ultima linea xd")
 
     # Llamar a la función loadfile con el pathfile
-    print("Esta a punto de llamar a load file functions")
     result = loadfile(pathfile)
 
     response_data = {
@@ -57,7 +51,33 @@ def load_file(request):
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 
+def changeValueRequest(request):
+    print("Funcion de changeValueRequest llamada")
+    pathfile = request.GET["name_file"]
+    back_value = request.GET["back_value"]
+    new_value = request.GET["new_value"]
+    column_title = request.GET["columnTitle"]
+    column_type = request.GET["columnType"]
+
+    if (column_type == 'int64'):
+        if (back_value == 'null'):
+            back_value = None
+        else:
+            back_value = int(back_value)
+    if (column_type == 'float64'):
+        if (back_value == 'null'):
+            back_value = None
+        else:
+            back_value = float(back_value)
+    if (back_value == 'null'):
+        back_value = None
+
+    result = changeValue(pathfile, column_title, back_value, new_value)
+
+    return JsonResponse({'Estado': result})
+
 def delete_duplicates(request):
-    nombre = request.GET["name_file"]
-    print(request.GET["name_file"])
-    return JsonResponse({'message': 'Hola desde delete_duplicates.', 'nombre de archivo' : nombre})
+    print("Funcion de delete_duplicates llamada")
+    pathfile = request.GET["path_file"]
+    result = deleteduplicates(pathfile)
+    return JsonResponse({'Estado': result})

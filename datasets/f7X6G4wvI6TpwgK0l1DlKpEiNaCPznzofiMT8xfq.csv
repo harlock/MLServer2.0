@@ -1,0 +1,104 @@
+Name,life_expectancy,height_male,height_female,weight_male,weight_female,energy,barking,country
+Golden Retriever,diez,23.5,23.5,70.0,60.0,3,1,Reino Unido
+Dachshund,14,8.5,8.5,24.0,24.0,3,5,Alemania
+Labrador Retriever,diez,23.5,23.5,72.5,62.5,5,3,Canadá
+Great Dane,9,31.0,31.0,157.5,125.0,4,3,Alemania
+Boxer,diez,24.0,24.0,72.5,57.5,4,3,Alemania
+Dalmatian,12,21.5,21.5,57.5,57.5,4,3,Croacia
+Poodle (Miniature),14,12.5,12.5,12.5,12.5,4,4,Francia
+Bullmastiff,8,26.0,26.0,120.0,110.0,4,1,Reino Unido
+Beagle,13,15.0,14.0,17.5,25.0,4,4,Reino Unido
+Border Collie,14,20.5,20.5,42.5,42.5,5,4,Reino Unido
+Siberian Husky,13,22.3,22.25,52.5,42.5,5,5,Rusia
+Shih Tzu,14,9.8,9.75,12.5,12.5,3,3,China
+Pomeranian,14,6.5,6.5,5.0,5.0,3,4,Polonia
+Cardigan Welsh Corgi,14,11.5,11.5,34.0,29.5,4,5,Gales
+Greyhound,12,29.0,29.0,67.5,62.5,4,3,Reino Unido
+Chow Chow,diez,18.5,18.5,57.5,57.5,3,1,China
+Chinese Shar-Pei,diez,19.0,19.0,52.5,52.5,3,3,China
+Cocker Spaniel,12,15.0,15.0,27.5,22.5,4,3,Reino Unido
+Great Pyrenees,diez,29.5,29.5,115.0,85.0,3,3,Francia
+West Highland White Terrier,14,11.0,11.0,17.5,17.5,4,5,Reino Unido
+Bernese Mountain Dog,9,26.3,26.25,97.5,82.5,4,3,Suiza
+Bull Terrier,13,21.5,21.5,60.0,60.0,4,3,Reino Unido
+Newfoundland,diez,28.0,28.0,140.0,110.0,3,1,Canadá
+Basset Hound,13,13.5,12.5,52.5,52.5,2,4,Francia
+German Longhaired Pointer,13,25.0,25.0,67.5,67.5,4,3,Alemania
+Pug,14,11.5,11.5,16.0,16.0,3,1,China
+Boston Terrier,12,16.0,16.0,18.5,18.5,4,2,Estados Unidos
+Maltese,14,8.0,8.0,7.7,7.7,3,3,Malta
+Bichon Frise,15,10.5,10.5,15.0,15.0,4,3,Bélgica
+American Bulldog,diez,24.0,22.0,87.5,70.0,0,1,Estados Unidos
+Chihuahua,15,6.5,6.5,5.0,5.0,4,5,México
+Rottweiler,diez,25.5,25.5,115.0,90.0,3,1,Alemania
+Vizsla,13,23.0,23.0,57.5,49.5,5,3,Hungría
+Akita,12,27.0,27.0,115.0,85.0,4,2,Japón
+Shetland Sheepdog,13,14.5,14.5,20.0,20.0,4,5,Reino Unido
+Bloodhound,diez,26.0,26.0,100.0,90.0,3,5,Francia
+Irish Setter,14,27.0,27.0,70.0,60.0,5,3,Irlanda
+Komondor,diez,29.0,26.0,120.0,99.0,3,3,Hungría
+Otterhound,12,27.0,27.0,115.0,80.0,3,5,Reino Unido
+Beauceron,diez,26.5,26.5,90.0,90.0,5,3,Francia
+Treeing Walker Coonhound,13,24.5,24.5,60.0,60.0,5,4,Estados Unidos
+Giant Schnauzer,14,26.5,26.5,72.5,65.0,5,3,Alemania
+Shiba Inu,15,15.5,15.5,23.0,17.0,3,3,Japón
+Norfolk Terrier,14,9.5,9.5,11.5,11.5,4,4,Reino Unido
+Afghan Hound,15,26.0,26.0,55.0,55.0,4,3,Afganistán
+Brittany,13,19.0,19.0,35.0,35.0,5,3,Francia
+Chinook,14,25.0,25.0,72.5,57.5,3,5,Estados Unidos
+Doberman Pinscher,diez,27.0,27.0,87.5,75.0,5,3,Alemania
+Pekingese,13,7.5,7.5,10.5,10.5,3,1,China
+Whippet,14,20.5,20.5,32.5,32.5,4,1,Reino Unido
+Basenji,14,17.0,17.0,24.0,22.0,4,1,República Democrática del Congo
+Bolognese,13,11.0,11.0,7.25,7.25,4,3,Italia
+Smooth Fox Terrier,14,15.5,15.5,18.0,16.0,4,5,Reino Unido
+Field Spaniel,13,18.0,18.0,42.5,42.5,3,3,Reino Unido
+Havanese,15,10.0,10.0,10.0,10.0,3,4,Cuba
+Japanese Chin,diez,9.5,9.5,9.0,9.0,3,2,Japón
+Keeshond,14,18.0,18.0,40.0,40.0,4,4,Países Bajos
+American Eskimo Dog,14,25.0,25.0,55.0,55.0,4,3,Estados Unidos
+American Hairless Terrier,15,14.0,14.0,14.0,14.0,3,3,Estados Unidos
+American Leopard Hound,14,24.0,24.0,57.5,57.5,4,3,Estados Unidos
+American Water Spaniel,12,16.5,16.5,37.5,32.5,3,3,Estados Unidos
+Anatolian Shepherd Dog,12,29.0,29.0,130.0,100.0,3,3,Turquía
+Barbet,13,21.8,21.75,50.0,50.0,3,3,Francia
+Bergamasco Sheepdog,14,23.5,23.5,77.0,64.0,3,1,Italia
+Berger Picard,13,24.5,24.5,60.0,60.0,4,2,Francia
+Boerboel,diez,25.5,25.5,175.0,175.0,3,3,Sudáfrica
+Borzoi,12,31.5,29.0,90.0,72.5,4,2,Rusia
+Bracco Italiano,12,24.0,24.0,72.5,72.5,4,2,Italia
+Cane Corso,diez,26.3,26.25,104.5,93.5,4,3,Italia
+Coton de Tulear,17,10.5,10.5,12.0,10.5,3,1,Madagascar
+Papillon,15,9.5,9.5,7.5,7.5,4,5,Francia
+Plott Hound,13,22.5,22.5,55.0,47.5,0,0,Estados Unidos
+Pumi,13,17.3,17.25,28.0,23.0,5,3,Hungría
+Xoloitzcuintli,16,22.0,22.0,44.0,44.0,4,3,México
+Tibetan Mastiff,diez,28.0,26.0,120.0,95.0,3,3,Tíbet
+Samoyed,13,22.3,22.25,55.0,42.5,4,5,Rusia
+Schipperke,13,12.0,12.0,13.0,13.0,3,4,Bélgica
+Rhodesian Ridgeback,diez,26.0,26.0,85.0,70.0,3,2,Zimbabue
+Russian Toy,13,9.5,9.5,4.95,4.95,3,4,Rusia
+Nova Scotia Duck Tolling Retriever,13,19.5,19.5,42.5,42.5,5,2,Canadá
+Mudi,13,16.8,16.75,23.5,23.5,5,4,Hungría
+Alaskan Klee Kai,15,27.0,27.0,115.0,85.0,4,0,Estados Unidos
+Jindo,14,20.0,20.0,40.0,40.0,4,3,Corea del Sur
+Irish Terrier,14,18.0,18.0,27.0,25.0,3,3,Irlanda
+Italian Greyhound,15,14.0,14.0,10.5,10.5,3,3,Italia
+Hovawart,12,25.5,25.5,77.5,77.5,3,1,Alemania
+Cavalier King Charles Spaniel,14,12.5,12.5,15.5,15.5,3,3,Reino Unido
+Alaskan Malamute,12,25.0,25.0,85.0,75.0,4,3,Estados Unidos
+Australian Cattle Dog,14,19.0,19.0,42.5,42.5,5,1,Australia
+Miniature Pinscher,14,11.3,11.25,9.0,9.0,5,5,Alemania
+Belgian Malinois,15,25.0,25.0,70.0,50.0,4,3,Bélgica
+Staffordshire Bull Terrier,13,15.0,15.0,33.0,29.0,4,3,Reino Unido
+American Staffordshire Terrier,14,18.5,18.5,62.5,47.5,3,3,Estados Unidos
+Australian Shepherd,14,21.5,21.5,57.5,47.5,5,3,Estados Unidos
+Pembroke Welsh Corgi,13,11.0,11.0,27.5,26.0,4,4,Reino Unido
+Yorkshire Terrier,13,7.5,7.5,7.0,7.0,4,4,Reino Unido
+French Bulldog,diez,12.0,12.0,24.0,22.0,3,1,Francia
+Irish Terrier,14,18.0,18.0,27.0,25.0,3,3,Irlanda
+Akita,12,27.0,27.0,115.0,85.0,4,2,Japón
+Golden Retriever,diez,23.5,23.5,70.0,60.0,3,1,Reino Unido
+Yorkshire Terrier,13,7.5,7.5,7.0,7.0,4,4,Reino Unido
+Yorkshire Terrier,13,7.5,7.5,7.0,7.0,4,4,Reino Unido
+Golden Retriever,diez,23.5,23.5,70.0,60.0,3,1,Reino Unido
