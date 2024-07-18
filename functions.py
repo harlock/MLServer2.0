@@ -1,9 +1,10 @@
 import pandas as pd
 import io
 from json import loads, dumps
+from pathlib import Path
+
 
 def loadfile(url: str):
-    print("hola buenas functions")
     df = pd.read_csv(url)
     buffer = io.StringIO()
 
@@ -35,3 +36,27 @@ def loadfile(url: str):
     duplicate_datas = duplicate_datas.to_json()
 
     return [rowss, colss, dataParsed, dataInfo, description_dataset, unique_valuess, duplicate_valuess, duplicate_datas]
+
+def changeValue(path_file,column_title, back_value,new_value):
+    print(type(back_value))
+    df = pd.read_csv(path_file)
+    if (back_value is None):
+        df[column_title] = df[column_title].fillna(new_value)
+
+    else:
+        df[column_title] = df[column_title].replace([back_value], new_value)
+    filepath = Path(path_file)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(filepath, index=False)
+
+    return "Valores de los datos cambiados"
+
+def deleteduplicates(path_file):
+    df = pd.read_csv(path_file)
+    df = df.drop_duplicates()
+
+    filepath = Path(path_file)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(filepath, index=False)
+
+    return "Datos duplicados borrados"
