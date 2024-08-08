@@ -6,7 +6,7 @@ import os.path
 import pandas as pd
 from pathlib import Path
 
-from functions import loadfile, deleteduplicates, changeValue
+from functions import loadfile, deleteduplicates, changeValue, dropcolumn
 
 from django.views.decorators.http import require_http_methods
 
@@ -80,4 +80,11 @@ def delete_duplicates(request):
     print("Funcion de delete_duplicates llamada")
     pathfile = request.GET["path_file"]
     result = deleteduplicates(pathfile)
+    return JsonResponse({'Estado': result})
+
+def drop_column(request):
+    print("Funcion de drop_column llamada")
+    pathfile = request.GET["path_file"]
+    column = request.GET["column_name"]
+    result = dropcolumn(pathfile, column)
     return JsonResponse({'Estado': result})

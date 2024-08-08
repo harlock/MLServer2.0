@@ -60,3 +60,12 @@ def deleteduplicates(path_file):
     df.to_csv(filepath, index=False)
 
     return "Datos duplicados borrados"
+
+def dropcolumn(path_file, column):
+    df = pd.read_csv(path_file)
+    df = df.drop(columns=[column])
+
+    filepath = Path(path_file)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(filepath, index=False)
+    return "Columna borrada correctamente"

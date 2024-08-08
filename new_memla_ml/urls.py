@@ -26,4 +26,5 @@ urlpatterns = [
     path('load_file/', main.load_file, name='load_file'),
     path('delete_duplicate/', main.delete_duplicates, name='delete_duplicate'),
     path('change_value/', main.changeValueRequest, name='change_value'),
+    path('drop_column/', main.drop_column, name='drop_column'),
 ]
