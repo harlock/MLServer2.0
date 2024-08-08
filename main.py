@@ -6,8 +6,7 @@ import os.path
 import pandas as pd
 from pathlib import Path
 
-from functions import loadfile, deleteduplicates, changeValue, splitData
-
+from functions import loadfile, deleteduplicates, changeValue, splitData, dropcolumn
 from django.views.decorators.http import require_http_methods
 
 def print_hi(name):
@@ -99,3 +98,10 @@ def split_data(request):
     }
 
     return JsonResponse(respuesta)
+
+def drop_column(request):
+    print("Funcion de drop_column llamada")
+    pathfile = request.GET["path_file"]
+    column = request.GET["column_name"]
+    result = dropcolumn(pathfile, column)
+    return JsonResponse({'Estado': result})
