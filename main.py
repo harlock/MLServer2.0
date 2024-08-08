@@ -6,7 +6,7 @@ import os.path
 import pandas as pd
 from pathlib import Path
 
-from functions import loadfile, deleteduplicates, changeValue
+from functions import loadfile, deleteduplicates, changeValue, splitData
 
 from django.views.decorators.http import require_http_methods
 
@@ -81,3 +81,21 @@ def delete_duplicates(request):
     pathfile = request.GET["path_file"]
     result = deleteduplicates(pathfile)
     return JsonResponse({'Estado': result})
+
+def split_data(request):
+    print("Llamando de split_data")
+    print(request.GET)
+    pathFile = request.GET["name_file"]
+    laboratoryId = request.GET["laboratoryId"]
+    testPercentage = request.GET["testPercentage"]
+
+    resultado = splitData(pathFile,  laboratoryId, testPercentage)
+    print(resultado)
+
+    respuesta = {
+        "path_test": resultado[0],
+        "path_training": resultado[1],
+        "laboratoryId": resultado[2]
+    }
+
+    return JsonResponse(respuesta)

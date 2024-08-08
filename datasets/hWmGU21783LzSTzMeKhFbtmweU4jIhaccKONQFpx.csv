@@ -1,5 +1,5 @@
 Name,life_expectancy,height_male,height_female,weight_male,weight_female,energy,barking,country
-jkjkjk,11,23.5,23.5,70.0,60.0,3,1,Reino Unido
+Golden Retriever,11,23.5,23.5,70.0,60.0,3,1,Reino Unido
 Dachshund,14,8.5,8.5,24.0,24.0,3,5,Alemania
 Labrador Retriever,11,23.5,23.5,72.5,62.5,5,3,Canadá
 Great Dane,9,31.0,31.0,157.5,125.0,4,3,Alemania
@@ -12,7 +12,7 @@ Border Collie,14,20.5,20.5,42.5,42.5,5,4,Reino Unido
 Siberian Husky,13,22.3,22.25,52.5,42.5,5,5,Rusia
 Shih Tzu,14,9.8,9.75,12.5,12.5,3,3,China
 Pomeranian,14,6.5,6.5,5.0,5.0,3,4,Polonia
-Cardigan Welsh Corg,14,11.5,11.5,34.0,29.5,4,5,Gales
+Cardigan Welsh Corgi,14,11.5,11.5,34.0,29.5,4,5,Gales
 Greyhound,12,29.0,29.0,67.5,62.5,4,3,Reino Unido
 Chow Chow,10,18.5,18.5,57.5,57.5,3,1,China
 Chinese Shar-Pei,10,19.0,19.0,52.5,52.5,3,3,China
