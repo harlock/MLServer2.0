@@ -80,9 +80,7 @@ def splitData(pathFile,  laboratoryId, testPercentage):
     # Colocar las características y la etiqueta (En este caso van todas para que el dataset al momento de dividir seleccione todas)
     X = df[features]
     y = df[features]    #Normalmente el target es solo una columna pero solo buscamos dividir el dataset
-
-    #Aqui se divide el datasett
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=testPercentage, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=testPercentage, random_state=42) #Aqui se divide el datasett
 
     #Guardamos en disco en la ubicación donde se guardan los datasets de laravel para poder consultar despues
     X_test.to_csv('C:/xampp/htdocs/Memla/MEMLA/storage/app/public/datasets/test'+laboratoryId+'.csv', index=False)  ##1/3
@@ -102,10 +100,6 @@ def splitData(pathFile,  laboratoryId, testPercentage):
     print(X_train)
     print("\nConjunto de prueba (X_test):")
     print(X_test)
-    #print("\nEtiquetas de entrenamiento (y_train):")
-    #print(y_train)
-    #print("\nEtiquetas de prueba (y_test):")
-    #print(y_test)
 
     pathtest = Path(path_test)
     pathtest.parent.mkdir(parents=True, exist_ok=True)
