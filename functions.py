@@ -1,8 +1,10 @@
 import pandas as pd
 import io
+import os
 from json import loads, dumps
 from pathlib import Path
 from sklearn.model_selection import train_test_split
+from decouple import config
 
 
 def loadfile(url: str):
@@ -74,19 +76,30 @@ def splitData(pathFile,  laboratoryId, testPercentage):
     print('Dataset original:')
     print(df)
 
-    # Seleccionar la información de las columnas, no el nombre de estass
-    features = df.columns
+    features = df.columns # Seleccionar la información de las columnas, no el nombre de estass
 
     # Colocar las características y la etiqueta (En este caso van todas para que el dataset al momento de dividir seleccione todas)
     X = df[features]
     y = df[features]    #Normalmente el target es solo una columna pero solo buscamos dividir el dataset
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=testPercentage, random_state=42) #Aqui se divide el datasett
 
+    dataset_path = config('dataset_path')  # Importar path para guardar desde el .env
+
     #Guardamos en disco en la ubicación donde se guardan los datasets de laravel para poder consultar despues
-    X_test.to_csv('C:/xampp/htdocs/Memla/MEMLA/storage/app/public/datasets/test'+laboratoryId+'.csv', index=False)  ##1/3
-    X_train.to_csv('C:/xampp/htdocs/Memla/MEMLA/storage/app/public/datasets/training'+laboratoryId+'.csv', index=False)  ##2/3
-    path_test = 'datasets/test'+laboratoryId+'.csv'
-    path_training = 'datasets/training'+laboratoryId+'.csv'
+    X_test.to_csv(dataset_path+'test(unTercio)--'+laboratoryId+'.csv', index=False)  ##1/3
+    X_train.to_csv(dataset_path+'training(unTercio)--'+laboratoryId+'.csv', index=False)  ##2/3
+
+    # Guarda el dataset pero en ML no en laravel (dice path_laravel pero es porque es la que se envia a laravel para consultar
+    path_test_laravel = 'datasets/test(unTercio)--' + laboratoryId + '.csv'
+    path_training_laravel = 'datasets/training(unTercio)--' + laboratoryId + '.csv'
+
+    pathtest = Path(path_test_laravel)
+    pathtest.parent.mkdir(parents=True, exist_ok=True)
+    X_test.to_csv(pathtest, index=False)
+
+    pathtraining = Path(path_training_laravel)
+    pathtraining.parent.mkdir(parents=True, exist_ok=True)
+    X_train.to_csv(pathtraining, index=False)
 
     # Obtener el número total de muestras y calcular el porcentaje y mostrar los resultados
     total_samples = len(df)
@@ -101,15 +114,7 @@ def splitData(pathFile,  laboratoryId, testPercentage):
     print("\nConjunto de prueba (X_test):")
     print(X_test)
 
-    pathtest = Path(path_test)
-    pathtest.parent.mkdir(parents=True, exist_ok=True)
-    X_test.to_csv(pathtest, index=False)
-
-    pathtraining = Path(path_training)
-    pathtraining.parent.mkdir(parents=True, exist_ok=True)
-    X_train.to_csv(pathtraining, index=False)
-
-    return [path_test, path_training, laboratoryId]
+    return [path_test_laravel, path_training_laravel, laboratoryId]
 
 def dropcolumn(path_file, column):
     df = pd.read_csv(path_file)
