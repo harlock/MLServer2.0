@@ -6,7 +6,7 @@ import os.path
 import pandas as pd
 from pathlib import Path
 
-from functions import loadfile, deleteduplicates, changeValue, dropcolumn
+from functions import loadfile, deleteduplicates, changeValue, dropcolumn, encodecolumno, encodecolumnn
 
 from django.views.decorators.http import require_http_methods
 
@@ -45,6 +45,7 @@ def load_file(request):
         "unique_valuess": result[5],
         "duplicate_valuess": result[6],
         "duplicate_datas": result[7],
+        "encode_valuess": result[8],
     }
     ##return JsonResponse({'pathfile':pathfile, 'namefile': namefile})
     return JsonResponse(response_data)
@@ -87,4 +88,21 @@ def drop_column(request):
     pathfile = request.GET["path_file"]
     column = request.GET["column_name"]
     result = dropcolumn(pathfile, column)
+    return JsonResponse({'Estado': result})
+
+def encode_column_o(request):
+    print("Funcion de encode_column ordinal llamada")
+    pathfile = request.GET["path_file"]
+    column = request.GET["column_name"]
+    values = request.GET["column_values"]
+    print(values)
+    result = encodecolumno(pathfile, column, values)
+
+    return JsonResponse({'Estado': result})
+
+def encode_column_n(request):
+    print("Funcion de encode_column nominal llamada")
+    pathfile = request.GET["path_file"]
+    column = request.GET["column_name"]
+    result = encodecolumnn(pathfile, column)
     return JsonResponse({'Estado': result})

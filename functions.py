@@ -35,7 +35,15 @@ def loadfile(url: str):
     duplicate_datas = duplicate_datas[duplicate_datas['size'] > 1]
     duplicate_datas = duplicate_datas.to_json()
 
-    return [rowss, colss, dataParsed, dataInfo, description_dataset, unique_valuess, duplicate_valuess, duplicate_datas]
+    encode_valuess = {}
+    for columna in df.columns:
+        num_valores_unicos = df[columna].nunique()  # Contar los valores únicos de la columna
+        encode_valuess[columna] = num_valores_unicos  # Guardar en el diccionario
+
+    # Convertir el diccionario a formato JSON
+    encode_valuess = dumps(encode_valuess)
+
+    return [rowss, colss, dataParsed, dataInfo, description_dataset, unique_valuess, duplicate_valuess, duplicate_datas, encode_valuess]
 
 def changeValue(path_file,column_title, back_value,new_value):
     print(type(back_value))
@@ -69,3 +77,30 @@ def dropcolumn(path_file, column):
     filepath.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(filepath, index=False)
     return "Columna borrada correctamente"
+
+def encodecolumno(path_file, column, values):
+    df = pd.read_csv(path_file)
+    values = values.split(',')
+
+    order = {column: idx + 1 for idx, column in enumerate(values)}
+    print(order)
+    print(type(order))
+    # Aplicar la codificación ordinal
+    df[column] = df[column].map(order)
+
+    filepath = Path(path_file)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(filepath, index=False)
+
+    return "Columna codificada ordinal correctamente"
+
+def encodecolumnn(path_file, column):
+    df = pd.read_csv(path_file)
+    df[column] = df[column].astype('category')
+    df = pd.get_dummies(df, columns=[column])
+
+    filepath = Path(path_file)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(filepath, index=False)
+
+    return "Columna codificada Nominal correctamente"
