@@ -1,13 +1,11 @@
 # This is a sample Python script.
 # Press Mayús+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-from django.http import  JsonResponse
+from django.http import JsonResponse
 import os.path
 import pandas as pd
 from pathlib import Path
-
-from functions import loadfile, deleteduplicates, changeValue, dropcolumn, encodecolumno, encodecolumnn
-
+from functions import loadfile, deleteduplicates, changeValue, splitData, splitRepresentative, splitKFold, dropcolumn, encodecolumno, encodecolumnn
 from django.views.decorators.http import require_http_methods
 
 def print_hi(name):
@@ -82,6 +80,59 @@ def delete_duplicates(request):
     pathfile = request.GET["path_file"]
     result = deleteduplicates(pathfile)
     return JsonResponse({'Estado': result})
+
+def split_data(request):
+    print("Llamando de split_data")
+    print(request.GET)
+    pathFile = request.GET["name_file"]
+    laboratoryId = request.GET["laboratoryId"]
+    testPercentage = request.GET["testPercentage"]
+
+    resultado = splitData(pathFile, laboratoryId, testPercentage)
+    print(resultado)
+
+    respuesta = {
+        "path_test": resultado[0],
+        "path_training": resultado[1],
+        "laboratoryId": resultado[2]
+    }
+    return JsonResponse(respuesta)
+
+def split_representative(request):
+    print("Llamando a split Representative")
+    print(request.GET)
+    pathFile = request.GET["name_file"]
+    laboratoryId = request.GET["laboratoryId"]
+    confidenceLevel = request.GET["confidenceLevel"]
+    marginError = request.GET["marginError"]
+
+    resultado = splitRepresentative(pathFile, laboratoryId, confidenceLevel, marginError)
+    print(resultado)
+
+    respuesta = {
+        "path_test": resultado[0],
+        "path_training": resultado[1],
+        "laboratoryId": resultado[2]
+    }
+    return JsonResponse(respuesta)
+
+def split_k_fold(request):
+    print("Llamando a split F-Fold")
+    print(request.GET)
+    pathFile = request.GET["name_file"]
+    laboratoryId = request.GET["laboratoryId"]
+    crossValidation = request.GET["crossValidation"]
+
+    resultado = splitKFold(pathFile, laboratoryId, crossValidation)
+    print(resultado)
+
+    respuesta = {
+        "path_test": resultado[0],
+        "path_training": resultado[1],
+        "laboratoryId": resultado[2]
+    }
+    #print(respuesta)
+    return JsonResponse(respuesta)
 
 def drop_column(request):
     print("Funcion de drop_column llamada")
