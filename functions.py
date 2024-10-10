@@ -5,7 +5,7 @@ from json import loads, dumps
 from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
-from decouple import config
+##from decouple import config
 from scipy.stats import norm
 from math import ceil
 
@@ -34,6 +34,7 @@ def loadfile(url: str):
 
     # Valores únicos
     unique_valuess = df[list(df.columns.values)].apply(lambda x: x.unique()).to_json()
+    ##outlierss = column_values = df.apply(lambda x: x.tolist()).to_json()
 
     # Valores duplicados
     duplicate_valuess = df.duplicated(subset=None, keep=False).to_json()
@@ -49,7 +50,8 @@ def loadfile(url: str):
     # Convertir el diccionario a formato JSON
     encode_valuess = dumps(encode_valuess)
 
-    return [rowss, colss, dataParsed, dataInfo, description_dataset, unique_valuess, duplicate_valuess, duplicate_datas, encode_valuess]
+    return [rowss, colss, dataParsed, dataInfo, description_dataset, unique_valuess, duplicate_valuess, duplicate_datas,
+            encode_valuess]
 
 def changeValue(path_file,column_title, back_value,new_value):
     print(type(back_value))
@@ -237,3 +239,52 @@ def encodecolumnn(path_file, column):
     df.to_csv(filepath, index=False)
 
     return "Columna codificada Nominal correctamente"
+
+def handleoutliers(path_file, column, value, index, selectedway):
+    df = pd.read_csv(path_file)
+    
+
+    filepath = Path(path_file)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(filepath, index=False)
+
+    return "Valor atípico manejado correctamente"
+
+def loadOutliers(url: str):
+    df = pd.read_csv(url)
+    buffer = io.StringIO()
+
+    df.info(buf=buffer, verbose=True)
+    lines = buffer.getvalue().splitlines()
+    dataInfo = (pd.DataFrame([x.split() for x in lines[5:-2]], columns=lines[3].split())
+                .drop('Count', axis=1)
+                .rename(columns={'Non-Null': 'Non-Null Count'})).to_json(orient="split")
+
+    dataInfo_dict = loads(dataInfo)
+    index = 0
+    threshold = 1.5
+    mediann = {}
+    meann = {}
+    outlierss = {}
+    for columns in df:
+        if (dataInfo_dict['data'][index][3] != 'object'):
+            # calcular las medidas de tendencia central
+            mediann[columns] = df[columns].median()
+            meann[columns] = df[columns].mean().round(2)
+
+            # calcular los valores atipicos numericos con IQR
+            Q1 = df[columns].quantile(0.25)
+            Q3 = df[columns].quantile(0.75)
+            IQR = Q3 - Q1
+            outliersers = df[(df[columns] < Q1 - threshold * IQR) | (df[columns] > Q3 + threshold * IQR)]
+            outlierss[columns] = outliersers[columns].tolist()
+        index += 1
+
+    outlierss = {clave: list(set(valores)) for clave, valores in outlierss.items()}
+    outlierss = dumps(outlierss)
+
+    mediann = dumps(mediann)
+    meann = dumps(meann)
+    modee = df[list(df.columns.values)].apply(lambda x: x.mode()).to_json()
+
+    return [outlierss, mediann, meann, modee]
