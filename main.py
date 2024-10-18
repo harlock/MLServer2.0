@@ -162,17 +162,19 @@ def handle_outliers(request):
     print("Funcion de handle_outliers llamada")
     pathfile = request.GET["path_file"]
     column = request.GET["column_name"]
-    value = request.GET["value"]
-    index = request.GET["indexx"]
-    selectedway = request.GET["handle"]
-    print(selectedway)
-    result = handleoutliers(pathfile, column, value, index, selectedway)
+    value = request.GET["numeric"]
+    index = request.GET["str"]
+    selectedway = request.GET["way"]
+    datatype = request.GET["type"]
+    print(pathfile, column, value, index, selectedway, datatype)
+    result = handleoutliers(pathfile, column, value, index, selectedway, datatype)
     return JsonResponse({'Estado': result})
 
 def load_Outliers(request):
     print("Funcion de load_Outliers llamada")
     pathfile = request.GET["path_file"]
     namefile = request.GET["name_file"]
+    target = request.GET["selected_target"]
     check_file = os.path.isfile(namefile)
     pathfile = pathfile if not check_file else namefile
 
@@ -183,13 +185,14 @@ def load_Outliers(request):
         df.to_csv(filepath, index=False)
 
     # Llamar a la función loadfile con el pathfile
-    result = loadOutliers(pathfile)
+    result = loadOutliers(pathfile, target)
 
     response_data = {
         "outlierss": result[0],
         "mediann": result[1],
         "meann": result[2],
         "modee": result[3],
+        "countss": result[4],
     }
     ##return JsonResponse({'pathfile':pathfile, 'namefile': namefile})
     return JsonResponse(response_data)
