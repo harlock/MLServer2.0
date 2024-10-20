@@ -5,7 +5,7 @@ from json import loads, dumps
 from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
-from decouple import config
+#from decouple import config
 from scipy.stats import norm
 from math import ceil
 
@@ -34,6 +34,7 @@ def loadfile(url: str):
 
     # Valores únicos
     unique_valuess = df[list(df.columns.values)].apply(lambda x: x.unique()).to_json()
+    ##outlierss = column_values = df.apply(lambda x: x.tolist()).to_json()
 
     # Valores duplicados
     duplicate_valuess = df.duplicated(subset=None, keep=False).to_json()
@@ -41,7 +42,16 @@ def loadfile(url: str):
     duplicate_datas = duplicate_datas[duplicate_datas['size'] > 1]
     duplicate_datas = duplicate_datas.to_json()
 
-    return [rowss, colss, dataParsed, dataInfo, description_dataset, unique_valuess, duplicate_valuess, duplicate_datas]
+    encode_valuess = {}
+    for columna in df.columns:
+        num_valores_unicos = df[columna].nunique()  # Contar los valores únicos de la columna
+        encode_valuess[columna] = num_valores_unicos  # Guardar en el diccionario
+
+    # Convertir el diccionario a formato JSON
+    encode_valuess = dumps(encode_valuess)
+
+    return [rowss, colss, dataParsed, dataInfo, description_dataset, unique_valuess, duplicate_valuess, duplicate_datas,
+            encode_valuess]
 
 def changeValue(path_file,column_title, back_value,new_value):
     print(type(back_value))
@@ -202,3 +212,118 @@ def dropcolumn(path_file, column):
     filepath.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(filepath, index=False)
     return "Columna borrada correctamente"
+
+def encodecolumno(path_file, column, values):
+    df = pd.read_csv(path_file)
+    values = values.split(',')
+
+    order = {column: idx + 1 for idx, column in enumerate(values)}
+    print(order)
+    print(type(order))
+    # Aplicar la codificación ordinal
+    df[column] = df[column].map(order)
+
+    filepath = Path(path_file)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(filepath, index=False)
+
+    return "Columna codificada ordinal correctamente"
+
+def encodecolumnn(path_file, column):
+    df = pd.read_csv(path_file)
+    df[column] = df[column].astype('category')
+    df = pd.get_dummies(df, columns=[column])
+
+    filepath = Path(path_file)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(filepath, index=False)
+
+    return "Columna codificada Nominal correctamente"
+
+def handleoutliers(path_file, column_title, value, index, selectedway, datatype):
+    df = pd.read_csv(path_file)
+
+    print(type(selectedway))
+    if(datatype == 'object'):
+        back_value = index
+    else:
+        if '.' in selectedway:
+            selectedway = float(selectedway)
+        else:
+            selectedway = int(selectedway)
+
+        if '.' in value:
+            back_value = float(value)
+        else:
+            back_value = int(value)
+
+    print(type(back_value), back_value)
+    print(type(selectedway), selectedway)
+
+    df[column_title] = df[column_title].replace([back_value], selectedway)
+
+    print(back_value)
+
+    filepath = Path(path_file)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(filepath, index=False)
+
+    print(df[column_title])
+
+    return "Valor atípico manejado correctamente"
+
+def loadOutliers(url: str, target: str):
+    #print("El target seleccionado es: "+str(target))
+    df = pd.read_csv(url)
+    buffer = io.StringIO()
+
+    df.info(buf=buffer, verbose=True)
+    lines = buffer.getvalue().splitlines()
+    dataInfo = (pd.DataFrame([x.split() for x in lines[5:-2]], columns=lines[3].split())
+                .drop('Count', axis=1)
+                .rename(columns={'Non-Null': 'Non-Null Count'})).to_json(orient="split")
+
+    dataInfo_dict = loads(dataInfo)
+    index = 0
+    rowss = df.shape[0]
+    threshold = 1.5
+    target_int = int(target)
+    mediann = {}
+    meann = {}
+    outlierss = {}
+    countss = {}
+    class_num = df[dataInfo_dict['data'][target_int][1]].nunique()
+    register_num = int(rowss / class_num)
+    register_num = int(register_num * 0.7)
+    for columns in df:
+        if (dataInfo_dict['data'][index][3] != 'object'):
+            #print(dataInfo_dict['data'][index][3])
+            # calcular las medidas de tendencia central
+            mediann[columns] = df[columns].median().round(2)
+            meann[columns] = df[columns].mean().round(2)
+
+            # calcular los valores atipicos numericos con IQR
+            Q1 = df[columns].quantile(0.25)
+            Q3 = df[columns].quantile(0.75)
+            IQR = Q3 - Q1
+            outliersers = df[(df[columns] < Q1 - threshold * IQR) | (df[columns] > Q3 + threshold * IQR)]
+            outlierss[columns] = outliersers[columns].tolist()
+        else:
+            # Crear el diccionario solo con los valores cuyo conteo sea menor a 15
+            conteo_diccionario = {k: v for k, v in df[columns].value_counts().to_dict().items() if v < register_num}
+            #conteo_diccionario = {v: k for k, v in df[columns].value_counts().to_dict().items() if v < register_num}
+            #conteo_diccionario = df[columns].value_counts().to_dict()
+            #print(conteo_diccionario)
+            countss[columns] = conteo_diccionario
+        index += 1
+
+    countss = dumps(countss)
+    #print(countss)
+    outlierss = {clave: list(set(valores)) for clave, valores in outlierss.items()}
+    outlierss = dumps(outlierss)
+
+    mediann = dumps(mediann)
+    meann = dumps(meann)
+    modee = df[list(df.columns.values)].apply(lambda x: x.mode()).to_json()
+
+    return [outlierss, mediann, meann, modee, countss]

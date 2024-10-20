@@ -5,8 +5,7 @@ from django.http import JsonResponse
 import os.path
 import pandas as pd
 from pathlib import Path
-
-from functions import loadfile, deleteduplicates, changeValue, splitData, splitRepresentative, splitKFold, dropcolumn
+from functions import *
 from django.views.decorators.http import require_http_methods
 from ML_algorithms import loadDT
 
@@ -45,6 +44,7 @@ def load_file(request):
         "unique_valuess": result[5],
         "duplicate_valuess": result[6],
         "duplicate_datas": result[7],
+        "encode_valuess": result[8],
     }
     ##return JsonResponse({'pathfile':pathfile, 'namefile': namefile})
     return JsonResponse(response_data)
@@ -166,3 +166,59 @@ def drop_column(request):
     column = request.GET["column_name"]
     result = dropcolumn(pathfile, column)
     return JsonResponse({'Estado': result})
+
+def encode_column_o(request):
+    print("Funcion de encode_column ordinal llamada")
+    pathfile = request.GET["path_file"]
+    column = request.GET["column_name"]
+    values = request.GET["column_values"]
+    print(values)
+    result = encodecolumno(pathfile, column, values)
+
+    return JsonResponse({'Estado': result})
+
+def encode_column_n(request):
+    print("Funcion de encode_column nominal llamada")
+    pathfile = request.GET["path_file"]
+    column = request.GET["column_name"]
+    result = encodecolumnn(pathfile, column)
+    return JsonResponse({'Estado': result})
+
+def handle_outliers(request):
+    print("Funcion de handle_outliers llamada")
+    pathfile = request.GET["path_file"]
+    column = request.GET["column_name"]
+    value = request.GET["numeric"]
+    index = request.GET["str"]
+    selectedway = request.GET["way"]
+    datatype = request.GET["type"]
+    print(pathfile, column, value, index, selectedway, datatype)
+    result = handleoutliers(pathfile, column, value, index, selectedway, datatype)
+    return JsonResponse({'Estado': result})
+
+def load_Outliers(request):
+    print("Funcion de load_Outliers llamada")
+    pathfile = request.GET["path_file"]
+    namefile = request.GET["name_file"]
+    target = request.GET["selected_target"]
+    check_file = os.path.isfile(namefile)
+    pathfile = pathfile if not check_file else namefile
+
+    if not check_file:
+        df = pd.read_csv(pathfile)
+        filepath = Path(namefile)
+        filepath.parent.mkdir(parents=True, exist_ok=True)
+        df.to_csv(filepath, index=False)
+
+    # Llamar a la función loadfile con el pathfile
+    result = loadOutliers(pathfile, target)
+
+    response_data = {
+        "outlierss": result[0],
+        "mediann": result[1],
+        "meann": result[2],
+        "modee": result[3],
+        "countss": result[4],
+    }
+    ##return JsonResponse({'pathfile':pathfile, 'namefile': namefile})
+    return JsonResponse(response_data)

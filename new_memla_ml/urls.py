@@ -29,6 +29,11 @@ urlpatterns = [
     path('split_data/', main.split_data, name='split_data'),
     path('split_representative/', main.split_representative, name='split_representative'),
     path('split_k_fold/', main.split_k_fold, name='split_k_fold'),
-    path('drop_column/', main.drop_column, name='drop_column'),
     path('train_model/', main.train_model, name='train_model'),
+
+    path('drop_column/', main.drop_column, name='drop_column'),
+    path('encode_column_o/', main.encode_column_o, name='encode_column_o'),
+    path('encode_column_n/', main.encode_column_n, name='encode_column_n'),
+    path('handle_outliers/', main.handle_outliers, name='handle_outliers'),
+    path('load_outliers/', main.load_Outliers, name='load_outliers'),
 ]
