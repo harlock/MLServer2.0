@@ -30,4 +30,5 @@ urlpatterns = [
     path('split_representative/', main.split_representative, name='split_representative'),
     path('split_k_fold/', main.split_k_fold, name='split_k_fold'),
     path('drop_column/', main.drop_column, name='drop_column'),
+    path('train_model/', main.train_model, name='train_model'),
 ]

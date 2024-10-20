@@ -130,12 +130,12 @@ def splitRepresentative(pathFile, laboratoryId, confidenceLevel, marginError):
     sample_size = ceil((Z ** 2 * p * (1 - p)) / (margin_of_error ** 2))  # Tamaño de la muestra
     sample_size = ceil(sample_size / (1 + (sample_size - 1) / N))        # Si la población es finita, ajustar el tamaño de la muestra
 
-    training = df.sample(n=sample_size, random_state=42)                 # Tomar la muestra
-    test = df.drop(training.index)                                       # Extraer el restante del dataset (será el de test)
+    test = df.sample(n=sample_size, random_state=42)                 # Tomar la muestra
+    training = df.drop(test.index)                                       # Extraer el restante del dataset (será el de test)
 
     print(f"Tamaño de la muestra: {sample_size}")
-    print(f"Dimensiones de la muestra (training): {training.shape}")
-    print(f"Dimensiones del restante (test): {test.shape}")
+    print(f"Dimensiones de la muestra (test): {test.shape}")
+    print(f"Dimensiones del restante (training): {training.shape}")
 
     dataset_path = config('dataset_path')  # Importar path para guardar desde el .env
 
