@@ -15,25 +15,24 @@ from sklearn.neural_network import MLPClassifier
 from decouple import config
 #from sklearn import *
 
-def loadDT(algorithm, configuration, pathTraining, pathTest, laboratoryID, spliteType):
+def loadDT(algorithm, configuration, pathTraining, pathTest, laboratoryID, spliteType, target, features):
     # Cargar los conjuntos de datos divididos.
     X_train = pd.read_csv(pathTraining)
     X_test = pd.read_csv(pathTest)
 
     print(X_train)
     print(X_test)
+    target = int(target)
+    features = list(map(int, features.split(',')))
+    print(target)
+    print(features)
 
-    # Extraer la columna de target
-    y_train = X_train['target']             #target de entrenamiento
-    y_test = X_test['target']               #target de prueba
-    #y_train = X_train.iloc[:, 5]
-    #y_test = X_test.iloc[:, 8]
+    y_train = X_train.iloc[:, target]    ##Target en train
+    y_test = X_test.iloc[:, target]      ##Target en test
 
-    # Eliminar la columna target de los conjuntos de features
-    X_train = X_train[['start_position', 'end_position', 'chou_fasman', 'emini', 'kolaskar_tongaonkar', 'parker', 'isoelectric_point', 'aromaticity', 'hydrophobicity', 'stability']]  #features de entrenamiento
-    X_test = X_test[['start_position', 'end_position', 'chou_fasman', 'emini', 'kolaskar_tongaonkar', 'parker', 'isoelectric_point', 'aromaticity', 'hydrophobicity', 'stability']]   #features de testeo
-    #X_train = X_train.iloc[:, 0:2,4:7] ##Funcion para excluir una columna.
-    #X_test = X_test.iloc[:, 0:8]
+    X_train = X_train.iloc[:, features]  ##features en train
+    X_test = X_test.iloc[:, features]    ##features en test
+
     X_train.shape, X_test.shape, y_train.shape, y_test.shape
 
     print(X_train)
@@ -53,7 +52,7 @@ def evaluateAndSaveModel(X_test, y_test, model, model_name, laboratoryID, splite
     precision = precision_score(y_test, y_pred) * 100
     precision = round(precision, 2)
     recall = recall_score(y_test, y_pred) * 100
-    recall = round(recall, 2)
+    recall = round(recall, 2)   
 
     # Generar la matriz de confusión
     matriz_confusion = confusion_matrix(y_test, y_pred)
@@ -135,5 +134,96 @@ def randomForest_basic(X_train, y_train, X_test, y_test, model_name, laboratoryI
     accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test, y_test, rf_basic, model_name, laboratoryID, spliteType)
     return accuracy, precision, recall, matriz_confusion, path_model
 
+def randomForest_large_trees(X_train, y_train, X_test, y_test, model_name, laboratoryID, spliteType):
+    rf_large_trees = RandomForestClassifier(n_estimators=300, max_features='sqrt', max_depth=10, bootstrap=True)
+    rf_large_trees.fit(X_train, y_train)
+    accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test, y_test, rf_large_trees, model_name, laboratoryID, spliteType)
+    return accuracy, precision, recall, matriz_confusion, path_model
 
+def randomForest_regularized(X_train, y_train, X_test, y_test, model_name, laboratoryID, spliteType):
+    rf_regularized = RandomForestClassifier(n_estimators=500, max_features='log2', max_depth=15, min_samples_split=4, min_samples_leaf=2, bootstrap=True)
+    rf_regularized.fit(X_train, y_train)
+    accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test, y_test, rf_regularized, model_name, laboratoryID, spliteType)
+    return accuracy, precision, recall, matriz_confusion, path_model
 
+def kNN_basic(X_train, y_train, X_test, y_test, model_name, laboratoryID, spliteType):
+    knn_basic = KNeighborsClassifier(n_neighbors=5, weights='uniform', algorithm='auto')
+    knn_basic.fit(X_train, y_train)
+    accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test, y_test, knn_basic, model_name, laboratoryID, spliteType)
+    return accuracy, precision, recall, matriz_confusion, path_model
+
+#Probar especificamente este de abajo
+def kNN_distance_weights(X_train, y_train, X_test, y_test, model_name, laboratoryID, spliteType):
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.fit_transform(X_test)
+    knn_distance_weights = KNeighborsClassifier(n_neighbors=7, weights='distance', algorithm='ball_tree')
+    knn_distance_weights.fit(X_train_scaled, y_train)
+    accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test_scaled, y_test, knn_distance_weights, model_name, laboratoryID, spliteType)
+    return accuracy, precision, recall, matriz_confusion, path_model
+
+def kNN_manhattan(X_train, y_train, X_test, y_test, model_name, laboratoryID, spliteType):
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.fit_transform(X_test)
+    knn_manhattan = KNeighborsClassifier(n_neighbors=3, weights='uniform', algorithm='brute', metric='manhattan')
+    knn_manhattan.fit(X_train_scaled, y_train)
+    accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test_scaled, y_test, knn_manhattan, model_name, laboratoryID, spliteType)
+    return accuracy, precision, recall, matriz_confusion, path_model
+
+def naiveBayes_gnb(X_train, y_train, X_test, y_test, model_name, laboratoryID, spliteType):
+    gnb = GaussianNB(var_smoothing=1e-9)
+    gnb.fit(X_train, y_train)
+    accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test, y_test, gnb, model_name, laboratoryID, spliteType)
+    return accuracy, precision, recall, matriz_confusion, path_model
+
+def naiveBayes_mnb(X_train, y_train, X_test, y_test, model_name, laboratoryID, spliteType):
+    mnb = MultinomialNB(alpha=1.0, fit_prior=True)
+    mnb.fit(X_train, y_train)
+    accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test, y_test, mnb, model_name, laboratoryID, spliteType)
+    return accuracy, precision, recall, matriz_confusion, path_model
+
+def naiveBayes_bnb(X_train, y_train, X_test, y_test, model_name, laboratoryID, spliteType):
+    binarizer = Binarizer(threshold=0.5)
+    X_train_binarized = binarizer.fit_transform(X_train)
+    X_test_binarized = binarizer.transform(X_test)
+    bnb = BernoulliNB(alpha=0.5, binarize=0.0)
+    bnb.fit(X_train_binarized, y_train)
+    accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test_binarized, y_test, bnb, model_name, laboratoryID, spliteType)
+    return accuracy, precision, recall, matriz_confusion, path_model
+
+def neural_basic(X_train, y_train, X_test, y_test, model_name, laboratoryID, spliteType):
+    nn_basic = MLPClassifier(hidden_layer_sizes=(100,), solver='adam', learning_rate='constant', max_iter=200)
+    nn_basic.fit(X_train, y_train)
+    accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test, y_test, nn_basic, model_name, laboratoryID, spliteType)
+    return accuracy, precision, recall, matriz_confusion, path_model
+
+def neural_multi_layer(X_train, y_train, X_test, y_test, model_name, laboratoryID, spliteType):
+    nn_multi_layer = MLPClassifier(hidden_layer_sizes=(150, 100, 50), solver='adam', learning_rate='adaptive', max_iter=500)
+    nn_multi_layer.fit(X_train, y_train)
+    accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test, y_test, nn_multi_layer, model_name, laboratoryID, spliteType)
+    return accuracy, precision, recall, matriz_confusion, path_model
+
+def neural_dropout_sgd(X_train, y_train, X_test, y_test, model_name, laboratoryID, spliteType):
+    nn_dropout_sgd = MLPClassifier(hidden_layer_sizes=(200, 100), solver='sgd', learning_rate='constant', max_iter=1000, alpha=0.001)
+    nn_dropout_sgd.fit(X_train, y_train)
+    accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test, y_test, nn_dropout_sgd, model_name, laboratoryID, spliteType)
+    return accuracy, precision, recall, matriz_confusion, path_model
+
+def gradientBoosting_basic(X_train, y_train, X_test, y_test, model_name, laboratoryID, spliteType):
+    gb_basic = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, subsample=1.0)
+    gb_basic.fit(X_train, y_train)
+    accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test, y_test, gb_basic, model_name, laboratoryID, spliteType)
+    return accuracy, precision, recall, matriz_confusion, path_model
+
+def gradientBoosting_high_estimators(X_train, y_train, X_test, y_test, model_name, laboratoryID, spliteType):
+    gb_high_estimators = GradientBoostingClassifier(n_estimators=300, learning_rate=0.05, max_depth=4, subsample=0.8)
+    gb_high_estimators.fit(X_train, y_train)
+    accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test, y_test, gb_high_estimators, model_name, laboratoryID, spliteType)
+    return accuracy, precision, recall, matriz_confusion, path_model
+
+def gradientBoosting_aggressive(X_train, y_train, X_test, y_test, model_name, laboratoryID, spliteType):
+    gb_aggressive = GradientBoostingClassifier(n_estimators=500, learning_rate=0.01, max_depth=5, subsample=0.7)
+    gb_aggressive.fit(X_train, y_train)
+    accuracy, precision, recall, matriz_confusion, path_model = evaluateAndSaveModel(X_test, y_test, gb_aggressive, model_name, laboratoryID, spliteType)
+    return accuracy, precision, recall, matriz_confusion, path_model

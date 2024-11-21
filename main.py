@@ -143,8 +143,10 @@ def train_model(request):
     pathTest = request.GET['test_dt']
     laboratoryID = request.GET['laboratory_id']
     spliteType = request.GET['spliteType']
+    target = request.GET['target']
+    features = request.GET['features']
 
-    resultado = loadDT(algorithm, configuration, pathTraining, pathTest, laboratoryID, spliteType)
+    resultado = loadDT(algorithm, configuration, pathTraining, pathTest, laboratoryID, spliteType, target, features)
     #print(resultado)
 
     respuesta = {

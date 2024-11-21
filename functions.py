@@ -5,7 +5,7 @@ from json import loads, dumps
 from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
-#from decouple import config
+from decouple import config
 from scipy.stats import norm
 from math import ceil
 
@@ -82,7 +82,7 @@ def splitData(pathFile,  laboratoryId, testPercentage):
     if testPercentage == 0:
         testPercentage = 1
     if testPercentage == 100:
-        testPercentage = 97
+        testPercentage = 98
     testPercentage = testPercentage/100
     print(testPercentage)
     df = pd.read_csv(pathFile)
