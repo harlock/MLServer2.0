@@ -196,3 +196,17 @@ def load_Outliers(request):
     }
     ##return JsonResponse({'pathfile':pathfile, 'namefile': namefile})
     return JsonResponse(response_data)
+
+def update_datasets(request):
+    print("Funcion de update_datasets llamada")
+    namefile = request.GET["name_file"]
+    target = request.GET["target"]
+    features = request.GET["features"]
+
+    result = updateDataset(namefile, target, features)
+
+    response_data = {
+        'index_column': result[0],
+    }
+
+    return JsonResponse(response_data)

@@ -34,4 +34,5 @@ urlpatterns = [
     path('encode_column_n/', main.encode_column_n, name='encode_column_n'),
     path('handle_outliers/', main.handle_outliers, name='handle_outliers'),
     path('load_outliers/', main.load_Outliers, name='load_outliers'),
+    path('update_dataset/', main.update_datasets, name='update_datasets'),
 ]

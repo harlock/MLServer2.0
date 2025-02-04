@@ -327,3 +327,26 @@ def loadOutliers(url: str, target: str):
     modee = df[list(df.columns.values)].apply(lambda x: x.mode()).to_json()
 
     return [outlierss, mediann, meann, modee, countss]
+
+def updateDataset(path_file, target, features):
+    df = pd.read_csv(path_file)
+
+    print(target)
+    index_column = df.columns.get_loc(target)
+    print(index_column)
+
+    features = features.split(',')
+    features = [int(i) for i in features]
+    features.append(index_column)
+    print(features)
+
+    df = df.iloc[:, features]
+    index_column = df.columns.get_loc(target)
+    index_column = str(index_column)
+    print(index_column)
+
+    filepath = Path(path_file)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(filepath, index=False)
+
+    return [index_column]
