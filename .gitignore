@@ -1,5 +1,7 @@
-__pycache__
+__pycache__/
+*.pyc
 datasets
+models
 .idea
 .DS_Store
 .env

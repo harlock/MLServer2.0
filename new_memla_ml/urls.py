@@ -26,9 +26,12 @@ urlpatterns = [
     path('load_file/', main.load_file, name='load_file'),
     path('delete_duplicate/', main.delete_duplicates, name='delete_duplicate'),
     path('change_value/', main.changeValueRequest, name='change_value'),
+
     path('split_data/', main.split_data, name='split_data'),
     path('split_representative/', main.split_representative, name='split_representative'),
     path('split_k_fold/', main.split_k_fold, name='split_k_fold'),
+    path('train_model/', main.train_model, name='train_model'),
+
     path('drop_column/', main.drop_column, name='drop_column'),
     path('encode_column_o/', main.encode_column_o, name='encode_column_o'),
     path('encode_column_n/', main.encode_column_n, name='encode_column_n'),

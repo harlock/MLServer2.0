@@ -7,6 +7,7 @@ import pandas as pd
 from pathlib import Path
 from functions import *
 from django.views.decorators.http import require_http_methods
+from ML_algorithms import loadDT
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
@@ -131,7 +132,34 @@ def split_k_fold(request):
         "path_training": resultado[1],
         "laboratoryId": resultado[2]
     }
-    #print(respuesta)
+    return JsonResponse(respuesta)
+
+def train_model(request):
+    print("Llamando a tran and save model")
+    print(request.GET)
+    algorithm = request.GET['algorithm']
+    configuration = request.GET['configuration']
+    pathTraining = request.GET['training_dt']
+    pathTest = request.GET['test_dt']
+    laboratoryID = request.GET['laboratory_id']
+    spliteType = request.GET['spliteType']
+    target = request.GET['target']
+    features = request.GET['features']
+
+    resultado = loadDT(algorithm, configuration, pathTraining, pathTest, laboratoryID, spliteType, target, features)
+    #print(resultado)
+
+    respuesta = {
+        "accuracy": resultado[0],
+        "precision": resultado[1],
+        "recall": resultado[2],
+        "matriz_confusion": resultado[3].tolist(),
+        "path_model": resultado[4],
+        "pathTraining": resultado[5],
+        "pathTest": resultado[6],
+        "model_name": resultado[7]
+    }
+    print(respuesta)
     return JsonResponse(respuesta)
 
 def drop_column(request):
