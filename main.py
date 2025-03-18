@@ -21,13 +21,18 @@ if __name__ == '__main__':
 @require_http_methods(["GET"])
 def load_file(request):
     print("Funcion de loadFile llamada")
+    print("name file= "+request.GET["name_file"])
+    print("path file= "+request.GET["path_file"])
     pathfile = request.GET["path_file"]
     namefile = request.GET["name_file"]
     check_file = os.path.isfile(namefile)
     pathfile = pathfile if not check_file else namefile
 
+    #print(pathfile)
     if not check_file:
-        df = pd.read_csv(pathfile)
+        print("Entraste al if NOT")
+        df = pd.read_csv(pathfile)#Aqui no ejecuta la funcion de read_csv, parece que la solicitud ni llega a mi servidor
+                                    # de laravel porque en los logs solo los marca hasta que dentengo los servicios
         filepath = Path(namefile)
         filepath.parent.mkdir(parents=True, exist_ok=True)
         df.to_csv(filepath, index=False)
