@@ -18,11 +18,12 @@ from django.contrib import admin
 from django.urls import path
 
 import main
+import test
 from . import view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('probarconexion/', view.index),
+    path('probarconexion/', test.probar),
     path('load_file/', main.load_file, name='load_file'),
     path('delete_duplicate/', main.delete_duplicates, name='delete_duplicate'),
     path('change_value/', main.changeValueRequest, name='change_value'),
