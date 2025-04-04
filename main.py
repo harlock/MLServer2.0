@@ -71,6 +71,7 @@ def load_file(request):
         except Exception as e:
             print(f"Error al leer el CSV con pandas: {e}")
 
+
         # Example usage
         # Replace with the URL of the file you want to download
         # Replace with the desired path and file name
