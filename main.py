@@ -3,8 +3,6 @@
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 from django.http import JsonResponse
 import os.path
-import requests
-import os
 import pandas as pd
 from pathlib import Path
 from functions import *
@@ -20,34 +18,9 @@ def print_hi(name):
 if __name__ == '__main__':
     print_hi('PyCharm')
 
-
-def download_file(url, save_path):
-    try:
-        # Send GET request to the URL
-        response = requests.get(url)
-
-        # Check if the request was successful (status code 200)
-        if response.status_code == 200:
-            # Write the content of the response to a local file
-            with open(save_path, 'wb') as file:
-                file.write(response.content)
-            print(f"File downloaded successfully: {save_path}")
-        else:
-            print(f"Failed to download file. Status code: {response.status_code}")
-    except Exception as e:
-        print(f"Error: {e}")
-
-@require_http_methods(['GET'])
-def probar(request):
-    print("buenas tardes")
-    print(pd.read_csv("http://localhost:8000/storage/datasets/4KAU6kiAG6HQzH9V2t0UXTGXs9YwFasIFffHzpzc.csv"))
-
-    return JsonResponse({'message': 'realizando conexión',
-                         'nueva variable': 'soy el contenido'})
-
 @require_http_methods(["GET"])
 def load_file(request):
-    print("--------------------------------------------------------------Funcion de loadFile llamada")
+    print("Funcion de loadFile llamada")
     print("name file= "+request.GET["name_file"])
     print("path file= "+request.GET["path_file"])
     pathfile = request.GET["path_file"]
@@ -57,27 +30,12 @@ def load_file(request):
 
     #print(pathfile)
     if not check_file:
-        print("if not")
-        #print(pd.read_csv("http://localhost:8000/storage/datasets/4KAU6kiAG6HQzH9V2t0UXTGXs9YwFasIFffHzpzc.csv"))
-
-        ###print("Entraste al if NOT")
-        url = "http://localhost:8000/storage/datasets/aHWxQXbQ5JLS941mKHXFUczSpxR5IhckNDLHOYhR.csv"
-        response = requests.get(url)
-        try:
-            print("antes de la catastrofe")
-            df = pd.read_csv(io.StringIO(response.text))
-            print("exito")
-            print(df)
-        except Exception as e:
-            print(f"Error al leer el CSV con pandas: {e}")
-
-
-        # Example usage
-        # Replace with the URL of the file you want to download
-        # Replace with the desired path and file name
-        #print("antes de download")
-        #download_file(pathfile, namefile)
-        #print("Archivo guardado correctamente")
+        print("Entraste al if NOT")
+        df = pd.read_csv(pathfile)#Aqui no ejecuta la funcion de read_csv, parece que la solicitud ni llega a mi servidor
+                                    # de laravel porque en los logs solo los marca hasta que dentengo los servicios
+        filepath = Path(namefile)
+        filepath.parent.mkdir(parents=True, exist_ok=True)
+        df.to_csv(filepath, index=False)
 
     # Llamar a la función loadfile con el pathfile
     result = loadfile(pathfile)
@@ -94,7 +52,6 @@ def load_file(request):
         "encode_valuess": result[8],
     }
     ##return JsonResponse({'pathfile':pathfile, 'namefile': namefile})
-    print("----------------------------------------------------------------Has salido de LoadFile")
     return JsonResponse(response_data)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
