@@ -49,9 +49,11 @@ def evaluateAndSaveModel(X_test, y_test, model, model_name, laboratoryID, splite
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred) * 100
     accuracy = round(accuracy, 2)
-    precision = precision_score(y_test, y_pred) * 100
+
+    precision = precision_score(y_test, y_pred, average='weighted') * 100
     precision = round(precision, 2)
-    recall = recall_score(y_test, y_pred) * 100
+
+    recall = recall_score(y_test, y_pred, average='weighted') * 100
     recall = round(recall, 2)   
 
     # Generar la matriz de confusión
