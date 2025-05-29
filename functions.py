@@ -204,14 +204,17 @@ def splitKFold(pathFile, laboratoryId, crossValidation):
     return [path_test_laravel, path_training_laravel, laboratoryId]
 
 
-def dropcolumn(path_file, column):
+def dropcolumn(path_file, columns):
+    drop_columns = columns.split(",")  # ['color', 'price']
+
     df = pd.read_csv(path_file)
-    df = df.drop(columns=[column])
+    df = df.drop(columns=drop_columns)
+    #df = df.drop(columns=[column])
 
     filepath = Path(path_file)
     filepath.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(filepath, index=False)
-    return "Columna borrada correctamente"
+    return "Columnaa borradas correctamente"
 
 def encodecolumno(path_file, column, values):
     df = pd.read_csv(path_file)
