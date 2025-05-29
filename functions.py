@@ -94,7 +94,7 @@ def splitData(pathFile,  laboratoryId, testPercentage):
     y = df[features]    #Normalmente el target es solo una columna pero solo buscamos dividir el dataset
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=testPercentage, random_state=42) #Aqui se divide el datasett
 
-    dataset_path = 'dataset_path'  # Importar path para guardar desde el .env
+    dataset_path = config('dataset_path')  # Importar path para guardar desde el .env
 
     #Guardamos en disco en la ubicación donde se guardan los datasets de laravel para poder consultar despues
     X_test.to_csv(dataset_path+'test(unTercio)--'+laboratoryId+'.csv', index=False)  ##1/3
@@ -147,7 +147,7 @@ def splitRepresentative(pathFile, laboratoryId, confidenceLevel, marginError):
     print(f"Dimensiones de la muestra (test): {test.shape}")
     print(f"Dimensiones del restante (training): {training.shape}")
 
-    dataset_path = 'dataset_path'  # Importar path para guardar desde el .env
+    dataset_path = config('dataset_path')  # Importar path para guardar desde el .env
 
     # Guardamos en disco en la ubicación donde se guardan los datasets de laravel para poder consultar despues
     test.to_csv(dataset_path+'test(RS)--'+laboratoryId+'.csv', index=False)  ##1/3
@@ -189,7 +189,7 @@ def splitKFold(pathFile, laboratoryId, crossValidation):
     print(training)
     print(test)
 
-    dataset_path = 'dataset_path'   # Importar path para guardar desde el .env
+    dataset_path = config('dataset_path')   # Importar path para guardar desde el .env
 
     # Guardamos en disco en la ubicación donde se guardan los datasets de laravel para poder consultar despues
     test.to_csv(dataset_path + 'test(K-fold)--' + laboratoryId + '.csv', index=False)  ##1/3
