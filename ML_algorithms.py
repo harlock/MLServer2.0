@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB, MultinomialNB, BernoulliNB
 from sklearn.neural_network import MLPClassifier
-#from decouple import config
+from decouple import config
 #from sklearn import *
 
 def loadDT(algorithm, configuration, pathTraining, pathTest, laboratoryID, spliteType, target, features):
